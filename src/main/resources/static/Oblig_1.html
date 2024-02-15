@@ -9,17 +9,19 @@
 <body>
 <h1> Bestilling av kinobilletter </h1>
 <!--Velger til film-->
-<td><label for ="filmVelger">Velg film: </label></td>
-<select id="filmVelger">
-    <option>-----</option>
-    <option value ="film1">The Hunger Games</option>
-    <option value ="film2">Juleferien </option>
-    <option value ="film3">The Nun Part II</option>
-</select>
 
-<br> <br>
-Antall: <input type="number" id="antall" min="1" style="width:30px"/>
-<span style="color:deeppink" id="antallError"></span>
+    Velg film <select id="filmVelger">
+    <option>-----</option>
+    <option>The Hunger Games</option>
+    <option>Juleferien </option>
+    <option>The Nun Part II</option>
+    </select>
+
+<br>
+
+<br>
+        Antall: <input type="number" id="antall" min="1" style="width:30px">
+        <span style="color: deeppink" id="antallError"></span>
 
 <!--Oppretter en tabell som tar inn opplysninger i inputbokser. Valideringsmelding
 skrives ut i rødt dersom feltene ikke blir fylt ut-->
@@ -27,35 +29,35 @@ skrives ut i rødt dersom feltene ikke blir fylt ut-->
 
     <tr>
         <td><label for ="fornavn">Fornavn: </label></td>
-        <td><input type="text" id="fornavn"/></td>
+        <td><input type="text" id="fornavn"></td>
         <td style="color: deeppink" id="fornavnError"></td>
     </tr>
 
     <tr>
         <td><label for ="etternavn">Etternavn: </label></td>
-        <td><input type="text" id="etternavn"/></td>
+        <td><input type="text" id="etternavn"></td>
         <td style="color: deeppink" id="etternavnError"></td>
     </tr>
 
     <tr>
         <td><label for ="telefonnr">Telefonnr: </label></td>
-        <td><input type="tel" id="telefonnr" maxlength="8"/></td>
+        <td><input type="tel" id="telefonnr" maxlength="8"></td>
         <td style="color: deeppink" id="telefonnrError"></td>
     </tr>
 
     <tr>
         <td><label for ="epost">Epost: </label></td>
-        <td><input type="email" id="epost"/> <th>
+        <td><input type="email" id="epost"><th>
         <td style="color: deeppink" id="epostError"></td>
     </tr>
     <tr>
-        <th> <button onclick="registrer()">Kjøp billett</button></th>
+        <td><button onclick="registrer()">Kjøp billett</button></td>
     </tr>
-
 </table>
 
 <h2> Alle billettene </h2>
 <!--Oppretter en div for lage et felt hvor billettene skrives ut til-->
+
 <div id="output"></div>
 
 <button onclick="slettBillett()">Slett billettene</button>

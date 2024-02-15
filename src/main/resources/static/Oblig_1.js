@@ -32,10 +32,10 @@ function registrer(){
         document.getElementById("epostError").innerHTML = "Skriv inn epost!";
         tomtfelt=true;
     }
-    if(tomtfelt==true){
+    if (tomtfelt===true){
         return;
-    }
 
+    }
     // Dersom boolean er false så lages det et objekt med verdiene fra inpuntboksene
     const billett = {
         filmVelger:filmVelger,
@@ -59,18 +59,19 @@ function registrer(){
     // Lager en tabell med kolonne-navnene
     let ut =
         "<table> <tr>" +
-        "<th>Film</th" +
-        "<th>Antall</th>"+
-        "<th>Fornavn</th>"+
-        "<th>Etternavn</th>"+
-        "<th>Telefonnr</th>"+
-        "<th>Epost</th>"+
+        " <th>Film</th " +
+        " <th>Antall</th> "+
+        " <th>Fornavn</th> "+
+        " <th>Etternavn</th> "+
+        " <th>Tlf</th> "+
+        " <th>Epost</th> "+
         "</tr>";
+
 // Tar i bruk en for-løkke som kjører igjennom arrayet og skriver ut i tabellen vi lagde over
     for (let s of kjopBillett){
-        ut += "<tr>";
+        ut += " <tr> ";
         ut +=
-            "<td>" + s.filmVelger+ "</td>"+
+            " <td> " + s.filmVelger+ " </td> "+
             "<td>" + s.antall+ "</td>"+
             "<td>" + s.fornavn+ "</td>"+
             "<td>" + s.etternavn+ "</td>"+
