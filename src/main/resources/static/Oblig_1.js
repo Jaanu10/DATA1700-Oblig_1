@@ -25,13 +25,16 @@ function registrer(){
     if (etternavn === ""){
         document.getElementById("etternavnError").innerHTML = "Skriv inn etternavn!";
         tomtfelt=true;
+
     } if (telefonnr === ""){
         document.getElementById("telefonnrError").innerHTML = "Skriv inn telefonnr!";
         tomtfelt=true;
-    } if (epost === ""){
-        document.getElementById("epostError").innerHTML = "Skriv inn epost!";
+    }
+    if (!epost.includes('@') || !epost.includes('.')){
+      document.getElementById("epostError").innerHTML = "Skriv inn epost!";
         tomtfelt=true;
     }
+
     if (tomtfelt===true){
         return;
 
@@ -49,12 +52,12 @@ function registrer(){
     //Inputboksene tømmes
 
     kjopBillett.push(billett);
-    document.getElementById("filmVelger").value=" ";
-    document.getElementById("antall").value=" ";
-    document.getElementById("fornavn").value=" ";
-    document.getElementById("etternavn").value=" ";
-    document.getElementById("telefonnr").value=" ";
-    document.getElementById("epost").value=" ";
+    document.getElementById("filmVelger").value='';
+    document.getElementById("antall").value='';
+    document.getElementById("fornavn").value='';
+    document.getElementById("etternavn").value='';
+    document.getElementById("telefonnr").value='';
+    document.getElementById("epost").value='';
 
     // Lager en tabell med kolonne-navnene
     let ut =
