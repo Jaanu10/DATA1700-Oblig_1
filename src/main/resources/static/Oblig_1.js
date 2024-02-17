@@ -30,6 +30,7 @@ function registrer(){
         document.getElementById("telefonnrError").innerHTML = "Skriv inn telefonnr!";
         tomtfelt=true;
     }
+    //Sørger for at mail-adressen inneholder @ og . for at den skal være gyldig
     if (!epost.includes('@') || !epost.includes('.')){
       document.getElementById("epostError").innerHTML = "Skriv inn epost!";
         tomtfelt=true;
