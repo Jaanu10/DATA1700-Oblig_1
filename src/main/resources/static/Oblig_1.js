@@ -26,12 +26,24 @@ function registrer(){
         document.getElementById("etternavnError").innerHTML = "Skriv inn etternavn!";
         tomtfelt=true;
 
-    } if (telefonnr === ""){
+    }
+
+    function validatePhone(telefonnr){
+        let valid = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/; //Hentet RegExP fra https://www.w3resource.com/javascript/form/phone-no-validation.php
+        return valid.test(telefonnr);
+    }
+
+    if (!validatePhone(telefonnr)){
         document.getElementById("telefonnrError").innerHTML = "Skriv inn telefonnr!";
         tomtfelt=true;
     }
-    //Sørger for at mail-adressen inneholder @ og . for at den skal være gyldig
-    if (!epost.includes('@') || !epost.includes('.')){
+
+    function validateEmail(epost){
+        let validEmail =/^\w+([.-]?\w+)*@\w+(\.-]?\w+)*(\.\w{2,3})+$/; //Hentet fra https://www.w3resource.com/javascript/form/email-validation.php
+        return validEmail.test(epost);
+    }
+
+    if (!validateEmail(epost)){
       document.getElementById("epostError").innerHTML = "Skriv inn epost!";
         tomtfelt=true;
     }
@@ -40,6 +52,8 @@ function registrer(){
         return;
 
     }
+
+
     // Dersom boolean er false så lages det et objekt med verdiene fra inpuntboksene
     const billett = {
         filmVelger:filmVelger,
