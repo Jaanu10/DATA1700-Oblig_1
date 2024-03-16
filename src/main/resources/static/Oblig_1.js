@@ -1,120 +1,115 @@
-//Oppretter et tomt array som tar inn hvert kjøp
-let kjopBillett =[]
 
+//-----------------------------------------------------------------Validates and register tickets--------------------
+$(document).ready(function () {
 
-// Når bruker trykker på kjøp billett knappen lages det konstanter fra verdiene i inputboksene
-// Lager en boolean som sjekkern når vi har tomme felt
-function registrer(){
-    //Fjerner error-meldingene
-    document.getElementById("antallError").innerHTML = "";
-    document.getElementById("fornavnError").innerHTML = "";
-    document.getElementById("etternavnError").innerHTML = "";
-    document.getElementById("telefonnrError").innerHTML = "";
-    document.getElementById("epostError").innerHTML = "";
+    function registrerBillett() {
 
-    const filmVelger = document.getElementById("filmVelger").value;
-    const antall = document.getElementById("antall").value;
-    const fornavn = document.getElementById("fornavn").value;
-    const etternavn = document.getElementById("etternavn").value;
-    const telefonnr = document.getElementById("telefonnr").value;
-    const epost= document.getElementById("epost").value;
+        $(".error").text(""); // Clear previous error messages
 
-    //Boolean blir tatt i bruk og returnerer en feilmelding til bruker.
-    // Ved tomme felt returnerer den feilmeldingen.
+        // Get values from the form
+        let billett = {
+            filmVelger: $("#filmVelger").val(),
+            antall: $("#antall").val(),
+            fornavn: $("#fornavn").val(),
+            etternavn: $("#etternavn").val(),
+            telefonnr: $("#telefonnr").val(),
+            epost: $("#epost").val()
+        };
 
-    let validering = true;
+        let validering = true;
 
-    if (antall==="") {
-        document.getElementById("antallError").innerHTML = "Skriv inn antall!";
-        validering=false;
-    }
-
-    if (fornavn===""){
-        document.getElementById("fornavnError").innerHTML="Skriv inn fornavn!";
-        validering=false;
-    }
-
-    if (etternavn==="") {
-        document.getElementById("etternavnError").innerHTML = "Skriv inn etternavn!";
-        validering=false;
-    }
-
-    function validatePhone(telefonnr){
-        let valid = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/; //Hentet RegExP fra https://www.w3resource.com/javascript/form/phone-no-validation.php
-        return valid.test(telefonnr);
-    }
-
-    if (!validatePhone(telefonnr)){
-        document.getElementById("telefonnrError").innerHTML = "Skriv inn telefonnr!";
-        validering=false;
-    }
-
-    {
-        function validateEmail(epost) {
-            let validEmail = /^\w+([.-]?\w+)*@\w+(\.-]?\w+)*(\.\w{2,3})+$/; //Hentet fra https://www.w3resource.com/javascript/form/email-validation.php
-            return validEmail.test(epost);
+        // -----------------------------------------------------------------Validation------------------------------
+        if (billett.filmVelger === "") {
+            $("#filmVelgerError").text("Velg en film!");
+            validering = false;
         }
 
-        if (!validateEmail(epost)) {
-            document.getElementById("epostError").innerHTML = "Skriv inn epost!";
-            validering=false;
+        if (billett.antall <= 0) {
+            $("#antallError").html("Skriv inn et gyldig antall!");
+            validering = false;
         }
 
+        if (billett.fornavn === "") {
+            $("#fornavnError").html("Skriv inn fornavn!");
+            validering = false;
+        }
+
+        if (billett.etternavn === "") {
+            $("#etternavnError").html("Skriv inn etternavn!");
+            validering = false;
+        }
+
+        const phoneRegEx = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
+        if (!phoneRegEx.test(billett.telefonnr)) {
+            $("#telefonnrError").html("Skriv inn telefonnr!");
+            validering = false;
+        }
+
+        if (billett.telefonnr === "") {
+            $("#telefonnrError").html("Skriv inn telefonnr!");
+            validering = false;
+        }
+
+        const epostRegEx = /^\w+([.-]?\w+)*@\w+(\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!epostRegEx.test(billett.epost)) {
+            $("#epostError").html("Skriv inn epost!");
+            validering = false;
+        }
+
+        if (billett.epost === "") {
+            $("#epostError").html("Skriv inn epost!");
+            validering = false;
+        }
+
+
+        // ---------------------------------------------------------- Sends the tickets data to the server-----------
+        if (validering) {
+            $.post("/lagre", billett)
+                .done(function (data) {      // Clear form fields after reg if validation is ok-----------------
+                    $("#bookingForm")[0].reset();
+                    kjorBillett();                 // Starts to load all tickets after registration
+                })
+        }
     }
 
-    if (validering===false){
-        return;
-    }
-    // Dersom boolean er false så lages det et objekt med verdiene fra inpuntboksene
-    const billett = {
-        filmVelger:filmVelger,
-        antall:antall,
-        fornavn:fornavn,
-        etternavn:etternavn,
-        telefonnr:telefonnr,
-        epost:epost
-    };
+    // -------------------------------------------------------------- Clear form fields after reg--------------------
+        $("#bookingForm")[0].reset();
 
-    //Inputboksene tømmes
+    // ---------------------------------------------------------------- Load all tickets -----------------------------
+    function kjorBillett() {
+        $.get("/hentBilletter")
+            .done(function (data) {
+                formaterData(data);
+            })
 
-    kjopBillett.push(billett);
-    document.getElementById("filmVelger").value='';
-    document.getElementById("antall").value='';
-    document.getElementById("fornavn").value='';
-    document.getElementById("etternavn").value='';
-    document.getElementById("telefonnr").value='';
-    document.getElementById("epost").value='';
-
-    // Lager en tabell med kolonne-navnene
-    let ut =
-        "<table> <tr>" +
-        " <th>Film</th> " +
-        " <th>Antall</th> " +
-        " <th>Fornavn</th> " +
-        " <th>Etternavn</th> " +
-        " <th>Telefonnummer</th> " +
-        " <th>Epost</th> " +
-        "</tr>";
-
-// Tar i bruk en for-løkke som kjører igjennom arrayet og skriver ut i tabellen vi lagde over
-    for (let s of kjopBillett) {
-        ut += " <tr> ";
-        ut +=
-            " <td> " + s.filmVelger + " </td> " +
-            " <td>" + s.antall + "</td>" +
-            " <td>" + s.fornavn + "</td>" +
-            " <td>" + s.etternavn + "</td>" +
-            " <td>" + s.telefonnr + "</td>" +
-            " <td>" + s.epost + "</td>";
-        ut += "</tr>";
     }
 
-    ut += "</table>";
-    document.getElementById("output").innerHTML=ut;
-}
+    // ------------------------------------------------------- Creating ticket data and display table ---------------
+    function formaterData(data) {
+        let ut = "";
+        data.forEach(function (ticket) {
+            ut += "<tr>" +
+                "<td>" + ticket.filmVelger + "</td>" +
+                "<td>" + ticket.antall + "</td>" +
+                "<td>" + ticket.fornavn + "</td>" +
+                "<td>" + ticket.etternavn + "</td>" +
+                "<td>" + ticket.telefonnr + "</td>" +
+                "<td>" + ticket.epost + "</td>" +
+                "</tr>";
+        });
+        $("#ticketBody").html(ut);
+    }
 
-//Tømmer arrayet og fjerner innholdet
-function slettBillett(){
-    kjopBillett=[];
-    document.getElementById("output").innerHTML="";
-}
+    // ---------------------------------------------------------------Event listener for buy ticket button-----------
+    $("#submitBtn").on("click", registrerBillett);
+
+    // --------------------------------------------------------------Event listener for delete tickets button--------
+    $("#deleteBtn").on("click", function () {
+        $.get("/slettBillett")
+            .done(function () {
+                kjorBillett();                                   // Update ticket list after deleting
+            })
+
+    });
+    kjorBillett();                                              // Load tickets when the page loads
+});
